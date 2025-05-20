@@ -1,9 +1,8 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { EnvModule } from './infrastructure/config/environment/env.module';
 import { LogggerConfigModule } from './infrastructure/logger/logger.module';
 import { ThrottlerConfigModule } from './infrastructure/throttler/throttler.module';
+import { HealthModule } from './modules/health.module';
 
 @Module({
   imports: [
@@ -11,9 +10,7 @@ import { ThrottlerConfigModule } from './infrastructure/throttler/throttler.modu
     EnvModule,
     LogggerConfigModule,
     ThrottlerConfigModule,
-
+    HealthModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
