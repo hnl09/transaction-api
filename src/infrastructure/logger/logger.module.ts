@@ -11,7 +11,6 @@ import { LoggerModule } from 'nestjs-pino';
             singleLine: true,
             colorize: true,
             translateTime: 'SYS:standard',
-            ignore: 'pid,hostname,time',
           },
         },
         customLogLevel: (req, res, err) => {
@@ -22,7 +21,25 @@ import { LoggerModule } from 'nestjs-pino';
             return 'warn';
           }
           return 'info';
-        }
+        },
+        serializers: {
+          req(req) {
+            return {
+              id: req.id,
+              method: req.method,
+              url: req.url,
+              query: req.query,
+              params: req.params,
+              remoteAddress: req.remoteAddress,
+            };
+          },
+          res(res) {
+            return {
+              statusCode: res.statusCode,
+              headers: res.headers,
+            };
+          },
+        },
       },
     }),
   ],

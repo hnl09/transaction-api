@@ -1,0 +1,19 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nestjs_transaction_api
+    environment:
+      NODE_ENV: prod
+    ports:
+      - "${API_EXT_PORT:-3000}:${API_INT_PORT:-8080}"
+    volumes:
+      - ./.env.prod:/usr/src/app/.env
+    restart: unless-stopped
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
