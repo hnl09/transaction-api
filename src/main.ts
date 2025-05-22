@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import helmet from 'helmet';
-import { Logger, } from 'nestjs-pino';
+import { Logger } from 'nestjs-pino';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { IEnvService, ENV_SERVICE } from './infrastructure/config/environment/env-service.interface';
 
