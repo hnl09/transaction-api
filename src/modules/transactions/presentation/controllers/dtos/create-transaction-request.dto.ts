@@ -18,7 +18,6 @@ export class CreateTransactionRequestDto {
     { maxDecimalPlaces: 2 },
     { message: 'Amount must be a number with at most 2 decimal places.' },
   )
-  @Min(0, { message: 'Amount must be a non-negative number.' })
   @Type(() => Number)
   amount: number;
 
