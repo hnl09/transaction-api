@@ -10,7 +10,7 @@ import { Type } from 'class-transformer';
 export class CreateTransactionRequestDto {
   @ApiProperty({
     description: 'The amount of the transaction. Must be a non-negative number.',
-    example: 123.45,
+    example: 50,
     type: Number,
   })
   @IsNotEmpty({ message: 'Amount should not be empty.' })
@@ -24,7 +24,7 @@ export class CreateTransactionRequestDto {
 
   @ApiProperty({
     description: 'The timestamp of the transaction in ISO 8601 format (UTC).',
-    example: '2024-02-20T12:34:56.789Z',
+    example: '1998-03-09T10:50:56.456Z',
     type: String,
     format: 'date-time',
   })

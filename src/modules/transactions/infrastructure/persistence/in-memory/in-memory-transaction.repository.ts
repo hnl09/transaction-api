@@ -20,4 +20,18 @@ export class InMemoryTransactionRepository implements ITransactionRepository {
 
     this.logger.log('All transactions deleted.');
   }
+
+  async findTransactionsInLastSixtySeconds(): Promise<TransactionEntity[]> {
+    const now = new Date();
+    const sixtySecondsAgo = new Date(now.getTime() - 60 * 1000);
+
+    const recentTransactions = this.transactions.filter(
+      (transaction) =>
+        transaction.timestamp >= sixtySecondsAgo && transaction.timestamp <= now,
+    );
+
+    this.logger.log(`Found ${recentTransactions.length} transactions in the last 60 seconds.`);
+
+    return recentTransactions;
+  }
 }

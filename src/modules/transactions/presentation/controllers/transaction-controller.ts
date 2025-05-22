@@ -3,6 +3,8 @@ import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
 import { CreateTransactionRequestDto } from './dtos/create-transaction-request.dto';
 import { CreateTransactionUseCase } from '../../application/use-cases/create-transaction/create-transaction.use-case';
 import { DeleteAllTransactionsUseCase } from '../../application/use-cases/delete-all-transactions/delete-all-transaction.use-case';
+import { StatisticsResponseDto } from './dtos/statistics.response.dto';
+import { GetStatisticsUseCase } from '../../application/use-cases/get-statistics/get-statistics.use-case';
 
 @ApiTags('Transactions')
 @Controller('transactions')
@@ -12,6 +14,7 @@ export class TransactionController {
   constructor(
     private readonly createTransactionUseCase: CreateTransactionUseCase,
     private readonly deleteAllTransactionsUseCase: DeleteAllTransactionsUseCase,
+    private readonly getStatisticsUseCase: GetStatisticsUseCase,
   ) {}
 
   @Post()
@@ -30,12 +33,21 @@ export class TransactionController {
   }
 
   @Delete()
-  @HttpCode(HttpStatus.OK) // Seria Melhor 204 aqui
+  @HttpCode(HttpStatus.OK) // 204 Would be more appropriate
   @ApiOperation({ summary: 'Delete all transactions' })
   @ApiResponse({ status: 200 })
   async deleteAllTransactions(): Promise<void> {
     this.logger.log('Received request to delete all transactions');
 
     await this.deleteAllTransactionsUseCase.execute();
+  }
+
+  @Get('/statistics')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Get transaction statistics for the last 60 seconds' })
+  @ApiResponse({ status: 200, type: StatisticsResponseDto })
+  async getStatistics(): Promise<StatisticsResponseDto> {
+    this.logger.log('Received request for statistics');
+    return this.getStatisticsUseCase.execute();
   }
 }

@@ -25,7 +25,6 @@ async function bootstrap() {
     .setDescription('API for managing transactions and their statistics.')
     .setVersion('1.0')
     .addTag('transactions')
-    .addTag('statistics')
     .addTag('health')
     .build();
   const document = SwaggerModule.createDocument(app, swaggerConfig);
