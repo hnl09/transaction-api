@@ -14,4 +14,10 @@ export class InMemoryTransactionRepository implements ITransactionRepository {
 
     return transaction;
   }
+
+  async deleteAll(): Promise<void> {
+    this.transactions = [];
+
+    this.logger.log('All transactions deleted.');
+  }
 }

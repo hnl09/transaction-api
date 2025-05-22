@@ -4,4 +4,5 @@ export const TRANSACTION_REPOSITORY = Symbol('TRANSACTION_REPOSITORY');
 
 export interface ITransactionRepository {
   create(transaction: TransactionEntity): Promise<TransactionEntity>;
+  deleteAll(): Promise<void>;
 }
