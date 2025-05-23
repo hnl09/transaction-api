@@ -1,6 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { DeleteAllTransactionsUseCase } from './delete-all-transaction.use-case';
-import { ITransactionRepository, TRANSACTION_REPOSITORY } from '../../../domain/repositories/transaction-repository.interface';
+import {
+  ITransactionRepository,
+  TRANSACTION_REPOSITORY,
+} from '../../../domain/repositories/transaction-repository.interface';
 import { Logger } from '@nestjs/common';
 
 const mockTransactionRepository = {
@@ -22,16 +25,18 @@ describe('DeleteAllTransactionsUseCase', () => {
           useValue: mockTransactionRepository,
         },
         {
-            provide: Logger,
-            useValue: {
-              log: jest.fn(),
-              error: jest.fn(),
-            },
+          provide: Logger,
+          useValue: {
+            log: jest.fn(),
+            error: jest.fn(),
           },
+        },
       ],
     }).compile();
 
-    useCase = module.get<DeleteAllTransactionsUseCase>(DeleteAllTransactionsUseCase);
+    useCase = module.get<DeleteAllTransactionsUseCase>(
+      DeleteAllTransactionsUseCase,
+    );
     repository = module.get<ITransactionRepository>(TRANSACTION_REPOSITORY);
   });
 
@@ -49,7 +54,9 @@ describe('DeleteAllTransactionsUseCase', () => {
 
   it('should propagate an error if repository.deleteAll fails', async () => {
     const errorMessage = 'Database unavailable';
-    mockTransactionRepository.deleteAll.mockRejectedValue(new Error(errorMessage));
+    mockTransactionRepository.deleteAll.mockRejectedValue(
+      new Error(errorMessage),
+    );
 
     await expect(useCase.execute()).rejects.toThrow(errorMessage);
     expect(repository.deleteAll).toHaveBeenCalledTimes(1);

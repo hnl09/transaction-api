@@ -1,6 +1,14 @@
-import { Injectable, Inject, UnprocessableEntityException, Logger } from '@nestjs/common';
-import { TransactionEntity } from '../../../domain/entities/transaction.entity'; 
-import { ITransactionRepository, TRANSACTION_REPOSITORY } from '../../../domain/repositories/transaction-repository.interface';
+import {
+  Injectable,
+  Inject,
+  UnprocessableEntityException,
+  Logger,
+} from '@nestjs/common';
+import { TransactionEntity } from '../../../domain/entities/transaction.entity';
+import {
+  ITransactionRepository,
+  TRANSACTION_REPOSITORY,
+} from '../../../domain/repositories/transaction-repository.interface';
 import { CreateTransactionCommand } from './create-transaction.command';
 
 /**
@@ -29,7 +37,7 @@ export class CreateTransactionUseCase {
    */
   async execute(command: CreateTransactionCommand): Promise<TransactionEntity> {
     this.logger.log('Executing CreateTransactionUseCase...');
-    
+
     const { amount, timestamp } = command;
 
     if (amount < 0) {
@@ -43,11 +51,13 @@ export class CreateTransactionUseCase {
     if (transactionTimestamp > new Date()) {
       this.logger.warn('Attempted to create transaction with future timestamp');
 
-      throw new UnprocessableEntityException('Transaction timestamp cannot be in the future.');
+      throw new UnprocessableEntityException(
+        'Transaction timestamp cannot be in the future.',
+      );
     }
 
     const transaction = new TransactionEntity(amount, transactionTimestamp);
-    
+
     return this.transactionRepository.create(transaction);
   }
 }

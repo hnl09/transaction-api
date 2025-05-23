@@ -35,7 +35,7 @@ export class DeleteAllTransactionsUseCase {
       this.logger.log('Successfully deleted all transactions.');
     } catch (error) {
       this.logger.error('Failed to delete all transactions.', error.stack);
-      
+
       throw error;
     }
   }

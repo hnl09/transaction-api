@@ -13,10 +13,8 @@ describe('TransactionController (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
-    
-    app.useGlobalPipes(
-      new ValidationPipe({}),
-    );
+
+    app.useGlobalPipes(new ValidationPipe({}));
     await app.init();
     server = app.getHttpServer();
   });
@@ -44,65 +42,67 @@ describe('TransactionController (e2e)', () => {
 
     it('should return 400 for malformed amount (string instead of number)', () => {
       const invalidTransaction = {
-        amount: "ten",
+        amount: 'ten',
         timestamp: new Date().toISOString(),
       };
       return request(server)
         .post('/transactions')
         .send(invalidTransaction)
         .expect(HttpStatus.BAD_REQUEST)
-        .then(response => {
-            expect(response.body.message).toEqual(
-                expect.arrayContaining([
-                    'Amount must be a number with at most 2 decimal places.'
-                ])
-            );
+        .then((response) => {
+          expect(response.body.message).toEqual(
+            expect.arrayContaining([
+              'Amount must be a number with at most 2 decimal places.',
+            ]),
+          );
         });
     });
 
     it('should return 422 for amount < 0', () => {
       const invalidTransaction = {
-        amount: -10.00,
+        amount: -10.0,
         timestamp: new Date().toISOString(),
       };
       return request(server)
         .post('/transactions')
         .send(invalidTransaction)
         .expect(HttpStatus.UNPROCESSABLE_ENTITY)
-        .then(response => {
-            expect(response.body.message).toContain('Amount cannot be negative');
+        .then((response) => {
+          expect(response.body.message).toContain('Amount cannot be negative');
         });
     });
 
     it('should return 422 for future timestamp', () => {
       const invalidTransaction = {
-        amount: 10.00,
+        amount: 10.0,
         timestamp: new Date(Date.now() + 100000).toISOString(),
       };
       return request(server)
         .post('/transactions')
         .send(invalidTransaction)
         .expect(HttpStatus.UNPROCESSABLE_ENTITY)
-         .then(response => {
-            expect(response.body.message).toContain('Transaction timestamp cannot be in the future');
+        .then((response) => {
+          expect(response.body.message).toContain(
+            'Transaction timestamp cannot be in the future',
+          );
         });
     });
 
-     it('should return 400 for invalid ISO timestamp format', () => {
+    it('should return 400 for invalid ISO timestamp format', () => {
       const invalidTransaction = {
-        amount: 10.00,
-        timestamp: "31/12/1950",
+        amount: 10.0,
+        timestamp: '31/12/1950',
       };
       return request(server)
         .post('/transactions')
         .send(invalidTransaction)
         .expect(HttpStatus.BAD_REQUEST)
-         .then(response => {
-            expect(response.body.message).toEqual(
-                expect.arrayContaining([
-                    'Timestamp must be a valid ISO 8601 date string (e.g., YYYY-MM-DDTHH:mm:ss.sssZ).',
-                ])
-            );
+        .then((response) => {
+          expect(response.body.message).toEqual(
+            expect.arrayContaining([
+              'Timestamp must be a valid ISO 8601 date string (e.g., YYYY-MM-DDTHH:mm:ss.sssZ).',
+            ]),
+          );
         });
     });
   });
@@ -124,28 +124,38 @@ describe('TransactionController (e2e)', () => {
 
     it('should return correct statistics for recent transactions', async () => {
       const now = Date.now();
-      await request(server).post('/transactions').send({ amount: 10.00, timestamp: new Date(now - 5000).toISOString() }); // 5s ago
-      await request(server).post('/transactions').send({ amount: 20.50, timestamp: new Date(now - 10000).toISOString() }); // 10s ago
-      await request(server).post('/transactions').send({ amount: 5.00, timestamp: new Date(now - 65000).toISOString() }); // 65s ago (more than 60s old)
+      await request(server)
+        .post('/transactions')
+        .send({ amount: 10.0, timestamp: new Date(now - 5000).toISOString() }); // 5s ago
+      await request(server)
+        .post('/transactions')
+        .send({ amount: 20.5, timestamp: new Date(now - 10000).toISOString() }); // 10s ago
+      await request(server)
+        .post('/transactions')
+        .send({ amount: 5.0, timestamp: new Date(now - 65000).toISOString() }); // 65s ago (more than 60s old)
 
       const response = await request(server)
         .get('/transactions/statistics')
         .expect(HttpStatus.OK);
 
-      expect(response.body.sum).toBeCloseTo(30.50);
+      expect(response.body.sum).toBeCloseTo(30.5);
       expect(response.body.avg).toBeCloseTo(15.25);
-      expect(response.body.max).toBeCloseTo(20.50);
-      expect(response.body.min).toBeCloseTo(10.00);
+      expect(response.body.max).toBeCloseTo(20.5);
+      expect(response.body.min).toBeCloseTo(10.0);
       expect(response.body.count).toBe(2);
     });
   });
 
   describe('/transactions (DELETE)', () => {
     it('should delete all transactions and return 200', async () => {
-      await request(server).post('/transactions').send({ amount: 10.00, timestamp: new Date().toISOString() });
+      await request(server)
+        .post('/transactions')
+        .send({ amount: 10.0, timestamp: new Date().toISOString() });
       await request(server).delete('/transactions').expect(HttpStatus.OK);
 
-      const statsResponse = await request(server).get('/transactions/statistics').expect(HttpStatus.OK);
+      const statsResponse = await request(server)
+        .get('/transactions/statistics')
+        .expect(HttpStatus.OK);
       expect(statsResponse.body.count).toBe(0);
     });
   });

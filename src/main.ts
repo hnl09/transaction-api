@@ -4,7 +4,10 @@ import { ValidationPipe } from '@nestjs/common';
 import helmet from 'helmet';
 import { Logger } from 'nestjs-pino';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { IEnvService, ENV_SERVICE } from './infrastructure/config/environment/env-service.interface';
+import {
+  IEnvService,
+  ENV_SERVICE,
+} from './infrastructure/config/environment/env-service.interface';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -15,7 +18,7 @@ async function bootstrap() {
     origin: true,
     methods: ['GET', 'POST', 'DELETE'],
   });
- 
+
   app.useLogger(app.get(Logger));
   app.flushLogs();
 

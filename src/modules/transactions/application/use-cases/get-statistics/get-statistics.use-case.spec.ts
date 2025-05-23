@@ -1,6 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { GetStatisticsUseCase } from './get-statistics.use-case';
-import { ITransactionRepository, TRANSACTION_REPOSITORY } from '../../../domain/repositories/transaction-repository.interface';
+import {
+  ITransactionRepository,
+  TRANSACTION_REPOSITORY,
+} from '../../../domain/repositories/transaction-repository.interface';
 import { TransactionEntity } from '../../../domain/entities/transaction.entity';
 import { Logger } from '@nestjs/common';
 
@@ -42,7 +45,9 @@ describe('GetStatisticsUseCase', () => {
   });
 
   it('should return zeroed statistics if no transactions are found', async () => {
-    mockTransactionRepository.findTransactionsInLastSixtySeconds.mockResolvedValue([]);
+    mockTransactionRepository.findTransactionsInLastSixtySeconds.mockResolvedValue(
+      [],
+    );
 
     const result = await useCase.execute();
 
@@ -53,7 +58,9 @@ describe('GetStatisticsUseCase', () => {
       min: 0,
       count: 0,
     });
-    expect(repository.findTransactionsInLastSixtySeconds).toHaveBeenCalledTimes(1);
+    expect(repository.findTransactionsInLastSixtySeconds).toHaveBeenCalledTimes(
+      1,
+    );
   });
 
   it('should calculate statistics correctly for given transactions', async () => {
@@ -62,23 +69,31 @@ describe('GetStatisticsUseCase', () => {
       { amount: 20, timestamp: new Date() },
       { amount: 30, timestamp: new Date() },
     ];
-    mockTransactionRepository.findTransactionsInLastSixtySeconds.mockResolvedValue(transactions as TransactionEntity[]);
+    mockTransactionRepository.findTransactionsInLastSixtySeconds.mockResolvedValue(
+      transactions as TransactionEntity[],
+    );
 
     const result = await useCase.execute();
 
     expect(result).toEqual({
-      sum: 60.00,
-      avg: 20.00,
-      max: 30.00,
-      min: 10.00,
+      sum: 60.0,
+      avg: 20.0,
+      max: 30.0,
+      min: 10.0,
       count: 3,
     });
-    expect(repository.findTransactionsInLastSixtySeconds).toHaveBeenCalledTimes(1);
+    expect(repository.findTransactionsInLastSixtySeconds).toHaveBeenCalledTimes(
+      1,
+    );
   });
 
   it('should handle a single transaction correctly', async () => {
-    const transactions: Partial<TransactionEntity>[] = [{ amount: 12.34, timestamp: new Date() }];
-    mockTransactionRepository.findTransactionsInLastSixtySeconds.mockResolvedValue(transactions as TransactionEntity[]);
+    const transactions: Partial<TransactionEntity>[] = [
+      { amount: 12.34, timestamp: new Date() },
+    ];
+    mockTransactionRepository.findTransactionsInLastSixtySeconds.mockResolvedValue(
+      transactions as TransactionEntity[],
+    );
 
     const result = await useCase.execute();
     expect(result).toEqual({
@@ -92,17 +107,19 @@ describe('GetStatisticsUseCase', () => {
 
   it('should handle transactions with zero amount', async () => {
     const transactions: Partial<TransactionEntity>[] = [
-        { amount: 0, timestamp: new Date() },
-        { amount: 0, timestamp: new Date() },
+      { amount: 0, timestamp: new Date() },
+      { amount: 0, timestamp: new Date() },
     ];
-    mockTransactionRepository.findTransactionsInLastSixtySeconds.mockResolvedValue(transactions as TransactionEntity[]);
+    mockTransactionRepository.findTransactionsInLastSixtySeconds.mockResolvedValue(
+      transactions as TransactionEntity[],
+    );
 
     const result = await useCase.execute();
     expect(result).toEqual({
-      sum: 0.00,
-      avg: 0.00,
-      max: 0.00,
-      min: 0.00,
+      sum: 0.0,
+      avg: 0.0,
+      max: 0.0,
+      min: 0.0,
       count: 2,
     });
   });

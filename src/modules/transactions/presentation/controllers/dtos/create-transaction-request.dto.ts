@@ -1,15 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsNotEmpty,
-  IsNumber,
-  Min,
-  IsISO8601,
-} from 'class-validator';
+import { IsNotEmpty, IsNumber, Min, IsISO8601 } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class CreateTransactionRequestDto {
   @ApiProperty({
-    description: 'The amount of the transaction. Must be a non-negative number.',
+    description:
+      'The amount of the transaction. Must be a non-negative number.',
     example: 50,
     type: Number,
   })
@@ -30,7 +26,10 @@ export class CreateTransactionRequestDto {
   @IsNotEmpty({ message: 'Timestamp should not be empty.' })
   @IsISO8601(
     { strict: true, strictSeparator: true },
-    { message: 'Timestamp must be a valid ISO 8601 date string (e.g., YYYY-MM-DDTHH:mm:ss.sssZ).' },
+    {
+      message:
+        'Timestamp must be a valid ISO 8601 date string (e.g., YYYY-MM-DDTHH:mm:ss.sssZ).',
+    },
   )
   timestamp: string;
 }

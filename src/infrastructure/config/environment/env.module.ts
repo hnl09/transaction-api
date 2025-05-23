@@ -1,13 +1,13 @@
-import { Global, Module } from "@nestjs/common";
-import { ConfigModule } from "@nestjs/config";
-import { ENV_SERVICE } from "./env-service.interface";
-import { EnvService } from "./env.service";
+import { Global, Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { ENV_SERVICE } from './env-service.interface';
+import { EnvService } from './env.service';
 
 @Global()
 @Module({
   imports: [
     ConfigModule.forRoot({
-        envFilePath: '.env',
+      envFilePath: '.env',
     }),
   ],
   providers: [

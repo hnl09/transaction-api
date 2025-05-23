@@ -31,7 +31,8 @@ export class GetStatisticsUseCase {
   async execute(): Promise<StatisticsResponseDto> {
     this.logger.log('Executing GetStatisticsUseCase...');
 
-    const recentTransactions = await this.transactionRepository.findTransactionsInLastSixtySeconds();
+    const recentTransactions =
+      await this.transactionRepository.findTransactionsInLastSixtySeconds();
 
     if (recentTransactions.length === 0) {
       return {
@@ -57,8 +58,8 @@ export class GetStatisticsUseCase {
         min = amount;
       }
     }
-    
-    if (min === Infinity) min = 0; 
+
+    if (min === Infinity) min = 0;
     if (max === -Infinity) max = 0;
 
     const count = recentTransactions.length;

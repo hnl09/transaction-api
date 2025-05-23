@@ -27,10 +27,13 @@ export class InMemoryTransactionRepository implements ITransactionRepository {
 
     const recentTransactions = this.transactions.filter(
       (transaction) =>
-        transaction.timestamp >= sixtySecondsAgo && transaction.timestamp <= now,
+        transaction.timestamp >= sixtySecondsAgo &&
+        transaction.timestamp <= now,
     );
 
-    this.logger.log(`Found ${recentTransactions.length} transactions in the last 60 seconds.`);
+    this.logger.log(
+      `Found ${recentTransactions.length} transactions in the last 60 seconds.`,
+    );
 
     return recentTransactions;
   }

@@ -1,8 +1,16 @@
 import { Controller, Get, HttpException, HttpStatus } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags, ApiProperty } from '@nestjs/swagger';
+import {
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+  ApiProperty,
+} from '@nestjs/swagger';
 
 class HealthStatusDto {
-  @ApiProperty({ example: 'ok', description: 'The health status of the application.' })
+  @ApiProperty({
+    example: 'ok',
+    description: 'The health status of the application.',
+  })
   status: string;
 }
 
@@ -16,7 +24,10 @@ export class HealthController {
     description: 'Application is healthy and running.',
     type: HealthStatusDto,
   })
-  @ApiResponse({ status: 503, description: 'App is unhealthy (Service Unavailable).' })
+  @ApiResponse({
+    status: 503,
+    description: 'App is unhealthy (Service Unavailable).',
+  })
   check(): HealthStatusDto {
     const isHealthy = true; // isHealthy check Mockup
 

@@ -16,7 +16,9 @@ describe('InMemoryTransactionRepository', () => {
       const transactionData = new TransactionEntity(10, new Date());
       const createdTransaction = await repository.create(transactionData);
       expect(createdTransaction).toEqual(transactionData);
-      const all = await (repository as any).findTransactionsInLastSixtySeconds();
+      const all = await (
+        repository as any
+      ).findTransactionsInLastSixtySeconds();
       expect(all).toContainEqual(transactionData);
     });
   });
@@ -26,7 +28,9 @@ describe('InMemoryTransactionRepository', () => {
       await repository.create(new TransactionEntity(10, new Date()));
       await repository.create(new TransactionEntity(20, new Date()));
       await repository.deleteAll();
-      const transactions = await (repository as any).findTransactionsInLastSixtySeconds();
+      const transactions = await (
+        repository as any
+      ).findTransactionsInLastSixtySeconds();
       expect(transactions.length).toBe(0);
     });
   });
@@ -36,7 +40,7 @@ describe('InMemoryTransactionRepository', () => {
 
     it('should return transactions within the last 60 seconds', async () => {
       const recentTx = new TransactionEntity(50, new Date(now - 10 * 1000)); // 10s atrás
-      const oldTx = new TransactionEntity(60, new Date(now - 70 * 1000));    // 70s atrás
+      const oldTx = new TransactionEntity(60, new Date(now - 70 * 1000)); // 70s atrás
       await repository.create(recentTx);
       await repository.create(oldTx);
 

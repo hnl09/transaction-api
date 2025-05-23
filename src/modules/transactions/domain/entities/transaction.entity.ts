@@ -7,7 +7,8 @@ export class TransactionEntity {
       throw new Error('Transaction amount must be a non-negative number.');
     }
 
-    const parsedTimestamp = timestamp instanceof Date ? timestamp : new Date(timestamp);
+    const parsedTimestamp =
+      timestamp instanceof Date ? timestamp : new Date(timestamp);
 
     if (isNaN(parsedTimestamp.getTime())) {
       throw new Error('Invalid transaction timestamp format.');
@@ -30,7 +31,10 @@ export class TransactionEntity {
     return this._timestamp;
   }
 
-  public static create(amount: number, timestamp: Date | string): TransactionEntity {
+  public static create(
+    amount: number,
+    timestamp: Date | string,
+  ): TransactionEntity {
     return new TransactionEntity(amount, timestamp);
   }
 }
