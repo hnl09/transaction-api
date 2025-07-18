@@ -1,4 +1,4 @@
-# Transaction Statistics API - Desafio Técnico NestJS
+# Transaction Statistics API - NestJS
 
 API RESTful desenvolvida em **NestJS** com **TypeScript** para gerenciar transações financeiras e fornecer estatísticas em tempo real.
 
